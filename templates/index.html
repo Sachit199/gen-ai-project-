@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CodeCraft</title>
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='logosr.png') }}">
+</head>
+<body>
+
+<div class="header">
+    
+    
+    <div class="nav-left">
+        <img src="{{ url_for('static', filename='icon.png') }}" class="nav-logo">
+        <h2 class="nav-title">CodeCraft</h2>
+    </div>
+
+    
+    <div class="nav-right">
+       <button class="login-btn" onclick="openLogin()">Login</button>
+       <button class="signup-btn" onclick="openSignup()">Sign Up</button>
+    </div>
+   
+    
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeLogin()">&times;</span>
+        <h2>Login</h2>
+
+        <input type="text" placeholder="Username or Email">
+        <input type="password" placeholder="Password">
+
+        <button class="submit-btn">Login</button>
+        <button class="submit-btn" onclick="closeLogin(); openSignup()">Sign Up</button>
+
+
+    </div>
+</div>
+
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSignup()">&times;</span>
+        <h2>Sign Up</h2>
+
+        <input type="text" placeholder="Username">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+
+        <button class="submit-btn">Create Account</button>
+        <button class="submit-btn" onclick="closeSignup(); openLogin()">Login</button>
+    </div>
+</div>
+    
+
+</div>
+</div>
+
+
+
+<div class="container">
+
+<body>
+
+<div class="container">
+
+
+    <img src="{{ url_for('static', filename='icon.png') }}" class="logo">
+
+    
+    <h1 class="logo-text">CodeCraft</h1>
+    <h2>AI Code Generator</h2>
+    <p class="subtitle">Generate & Explain Code Instantly</p>
+
+    <textarea id="input" placeholder="Type your prompt or paste code..."></textarea>
+
+  
+    <div class="buttons">
+        <button onclick="generate()">⚡ Generate</button>
+        <button onclick="explain()">🧠 Explain</button>
+    </div>
+
+    
+    <div class="output-box" id="outputBox" style="display: none;">
+        <pre id="output"></pre>
+    </div>
+
+</div>
+
+
+<button class="about-btn" onclick="openSidebar()">About</button>
+
+<div id="sidebar" class="sidebar">
+
+    <button class="close-btn" onclick="closeSidebar()">×</button>
+
+    <h2>About CodeCraft</h2>
+
+    <p>
+        CodeCraft is an AI-powered code generator designed to help developers, students, 
+        and beginners create clean and efficient code instantly. 
+    </p>
+
+    <p>
+        With just a simple prompt, CodeCraft can generate code, explain logic, 
+        and assist you in learning programming faster and smarter.
+    </p>
+
+    <p>
+        Whether you are building projects, learning new languages, or debugging code, 
+        CodeCraft makes development easy and powerful.
+    </p>
+
+</div>
+
+<script>
+function openSidebar() {
+    document.getElementById("sidebar").classList.add("active");
+}
+
+function closeSidebar() {
+    document.getElementById("sidebar").classList.remove("active");
+}
+</script>
+
+<script>
+
+
+function showOutput() {
+    document.getElementById("outputBox").style.display = "block";
+}
+
+
+async function generate() {
+    let text = document.getElementById("input").value;
+
+    showOutput(); 
+
+    document.getElementById("output").innerText = "⏳ Generating...";
+
+    let res = await fetch("/generate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({prompt: text})
+    });
+
+    let data = await res.json();
+    document.getElementById("output").innerText = data.result;
+}
+
+
+async function explain() {
+    let text = document.getElementById("input").value;
+
+    showOutput(); 
+
+    document.getElementById("output").innerText = "⏳ Explaining...";
+
+    let res = await fetch("/explain", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({code: text})
+    });
+
+    let data = await res.json();
+    document.getElementById("output").innerText = data.result;
+}
+
+</script>
+
+<script>
+function openLogin() {
+    document.getElementById("loginModal").style.display = "block";
+}
+
+function closeLogin() {
+    document.getElementById("loginModal").style.display = "none";
+}
+
+function openSignup() {
+    document.getElementById("signupModal").style.display = "block";
+}
+
+function closeSignup() {
+    document.getElementById("signupModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    let login = document.getElementById("loginModal");
+    let signup = document.getElementById("signupModal");
+
+    if (event.target == login) {
+        login.style.display = "none";
+    }
+    if (event.target == signup) {
+        signup.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
