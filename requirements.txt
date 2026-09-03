@@ -204,7 +204,6 @@ pycparser==3.0
 pydantic==2.12.5
 pydantic_core==2.41.5
 pydeck==0.9.1
-pygame==2.6.1
 PyGetWindow==0.0.9
 pyglet==2.1.13
 Pygments==2.19.2
